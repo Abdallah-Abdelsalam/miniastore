@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <title>{% block title %}{% endblock %}Minia store</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+        
+        <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+
+        <script src="{% static 'scripts/main.js' %}"></script>
+    </head>
+
+    <body>
+        <nav class="navbar is-dark" >
+            <div class="navbar-brand">
+                <a href="/" class="navbar-item"><strong>Minia Store</strong></a>
+                    <button class="dropbtn" onclick="myFunction()">BRANDS
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="navbar-end">
+                        <div class="dropdown-content" id="myDropdown">
+                            {% for category in menu_categories %}
+                                <a href="{% url 'category' category.slug %}" class="navbar-item">{{ category.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                        <div class="navbar-item topnav"id="main" style="height:auto; width:auto; float:left; padding:4px; margin-right:3%;">
+                            <button class="openbtn" onclick="openNav()">☰{% if cart %} ({{ cart|length }}){% endif %}</button> 
+                        </div>  
+                            <div id="mySidebar" class="sidebar">
+                                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                                        <a href="{% url 'brandpage' %}" class="navbar-item">Categories</a>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <a href="{% url 'contact' %}" class="navbar-item">Contact</a>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <a href="{% url 'cart' %}" class="button is-dark">Cart{% if cart %} ({{ cart|length }}){% endif %}</a>
+                            </div>
+                    </div>
+        </nav>
+        <div class="announcement">
+            <p>Free Shipping inside alminya available until 26/5 Only for our followers !&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="">Full Story ></a></p>
+          </div>
+
+        <script>
+
+
+            function openNav() {
+                document.getElementById("mySidebar").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+              }
+              
+
+              function closeNav() {
+                document.getElementById("mySidebar").style.width = "0";
+                document.getElementById("main").style.marginLeft= "0";
+              }
+            /* When the user clicks on the button, 
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+              document.getElementById("myDropdown").classList.toggle("show");
+            }
+            
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(e) {
+              if (!e.target.matches('.dropbtn')) {
+              var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                  myDropdown.classList.remove('show');
+                }
+              }
+            }
+            </script>
+
+    <section class="section">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+    
+        <footer class="footer">
+            <h3 class="is-size-4 mb-4">Minia Store</h3>
+            <!--facbook link:
+                instagram link:
+                Email for contact:
+            -->
+        </footer>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

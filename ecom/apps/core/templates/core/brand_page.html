@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Welcome | {% endblock %}
+
+{% block content %}
+<div class="columns is-multiline mb-10">
+    <div class="column is-12 has-text-centered mt-6 mb-6">
+        <h2 class="is-size-3">Categories</h2>
+    </div>
+</div>
+<br>
+
+<div class="grid-container">
+    {% for brand in menu_brands %} 
+            <div class="item">
+                        <figure class = "grid-item image is-2by3 mb-6 list-item">
+                            <a href="{% url 'brand' brand.slug %}"><img src="{{ brand.image.url }}" ></a>
+                        </figure>
+                        
+                        <h3 class = " grid-item is-dark "> {{ brand.title }}</h3>
+            </div>
+                    {% endfor %}
+        
+        </div>
+        <style>
+            
+            img {
+                margin-bottom: 10px;
+                block-size: auto;
+                align:center;
+                height: auto;
+                background-color: grey;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 20px 0 rgba(0, 0,  0, 0.19);
+                max-inline-size: 100%;
+                width: 100%;
+                height: auto;
+            }
+            .caption {
+                display: block;
+            }
+    
+    
+        </style>
+
+{% endblock %}

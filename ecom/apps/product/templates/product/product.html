@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+{% block title %} {{ product.title }} | {% endblock %}
+
+{% block content %}
+
+{% if product.image %}
+    <figure class = "image is-4by3 mb-6" style="width:100%; justify-content:center;">
+        <img src="{{ product.image.url }}">
+    </figure>
+        {% for pi in product.productimage_set.all %}
+        <a href="{{pi.image.url}}"  class="lol modal-button">
+            <div id="thumbnails" class="col-md-4">
+                <img src="{{pi.image.url}}" class="img-fluid" style="height:100px; solid-border:3px; object-fit:contain;"alt="">
+            </a>
+            </div>
+
+{% endfor %}
+{% endif %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
+    <h1 class="title"> {{ product.title }}, LE{{ product.price }}</h1>
+
+    <p class="mb-5"><span class="tag is-dark">{{ product.brand.title }}</span></p> 
+
+    <p class="mb-6"><span class="tag is-dark">{{ product.vendor.name }}</span></p>
+
+    <p>{{ product.description }}</p>
+
+    <hr>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-success is-toast{{ message.tags }}"> {{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="POST" action="." class="mt-6" id="payment-form">
+        {% csrf_token %}
+
+        {% if not product.parent %}
+                <div class="control">
+                    <h3 class=" is-dark is-uppercase">Enter your size</h3>
+                    <input class="input" type="text" name="size" >
+                </div>
+            {% if product.color %}
+                
+                <br>
+                <div class="control">
+                    <h3 class=" is-dark is-uppercase">Enter your color</h3>
+                    <input class="input" type="text" name="color" >
+                </div>
+                <br>
+            {% else %}
+                <input type=hidden name="color" value={{product.color}} />
+            {% endif %}
+        {% else %}
+        <input type=hidden name="size" value={{product.size}} />
+        <input type=hidden name="color" value={{product.color}} />
+        {% endif %}
+
+        
+            
+        <!-- Quantity Selector -->
+        <div class="field has-addons">
+          <div class="control">
+            <h3 class=" is-dark is-uppercase">Quantity</h3>
+            <input class="input" type="number" name="quantity" value="1" min="1">
+          </div>
+          
+          <div class="control">
+            <br>
+              <button class="button is-dark is-uppercase">Add to cart</button>
+            </div>
+        </div>
+
+    </form>
+    {% if similar_products %}
+        <hr>
+
+        <div class="columns is-multiline">
+            <div class="column is-12">
+                <h2 class="subtitle">Similar products</h2>
+            </div>
+
+            {% for product in similar_products %}
+                {% include 'product/parts/list_item.html' %}
+            {% endfor %}
+    {% endif %}
+{% endblock %}
